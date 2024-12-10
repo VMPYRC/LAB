@@ -37,7 +37,7 @@ button:hover {
 }
 
 .output pre {
-	background-color: #00FF00;
+	background-color: #FFFFFF;
 	padding: 10px;
 	border: 1px solid #000000;
 }
@@ -48,4 +48,21 @@ hr {
 	background-color: #FF0080;
 	width: 50%;
 	margin: 20px auto;
+}
+
+a {
+	color: #FF0080;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #00FFFF;
+}
+
+a:visited {
+	color: #9900FF;
+}
+
+a:focus {
+	outline: 2px solid #9900FF;
 }
