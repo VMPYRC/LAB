@@ -15,7 +15,6 @@
 		button {
 			width: 100%;
 			padding: 10px;
-			font-size: 1em;
 		}
 
 		button {
@@ -46,22 +45,77 @@
 	</div>
 
 	<script>
+		// List of exceptions (word -> syllable count)
+		const exceptions = {
+			"fade": 1,
+			"strides": 1
+		};
+
 		function countSyllables() {
 			const text = document.getElementById("textInput").value;
 			const lines = text.split('\n');
-			let output = lines.map((line, index) => {
-				const words = line.trim().split(/\s+/).filter(Boolean);
-				const syllableInfo = words.map(word => `${word}(${countSyllablesInWord(word)})`).join(' ');
-				const totalSyllables = words.reduce((sum, word) => sum + countSyllablesInWord(word), 0);
-				return `Line ${index + 1}: ${syllableInfo} | Total syllables: ${totalSyllables}`;
+			let totalSyllables = 0;
+			let totalWords = 0;
+			const output = lines.map(line => {
+				const words = line.trim().split(/\s+/);
+				const syllableDetails = words.map(word => {
+					const syllableCount = countSyllablesInWord(word);
+					totalSyllables += syllableCount;
+					totalWords += 1;
+					return `${word.replace(/[^a-zA-Z]/g, '')}(${syllableCount})`;
+				}).join(' ');
+				const lineSyllables = words.reduce((sum, word) => sum + countSyllablesInWord(word), 0);
+				const hyphenatedLine = words.map(word => hyphenateWord(word)).join(' ');
+				return `${lineSyllables} | ${hyphenatedLine}`;
 			}).join('\n');
-			document.getElementById("result").innerText = output;
+
+			const summary = `Total: ${totalSyllables} syllables, ${totalWords} words`;
+
+			document.getElementById("result").innerText = output + '\n' + summary;
 		}
 
+		// Syllable counting function with exceptions
 		function countSyllablesInWord(word) {
-			word = word.toLowerCase().replace(/[^a-z]/g, '');
+			word = word.toLowerCase().replace(/[^a-z]/g, ''); // Remove non-alphabetic characters
+
+			// Check if the word is in the exception list
+			if (exceptions[word]) {
+				return exceptions[word];
+			}
+
+			// Standard syllable counting (simplified)
 			const syllableCount = (word.match(/[aeiouy]+/g) || []).length;
-			return Math.max(syllableCount - (word.endsWith('e') ? 1 : 0), 1);
+
+			// Handle special cases like silent 'e' at the end of the word
+			if (word.endsWith('e') && syllableCount > 1) {
+				return syllableCount - 1;
+			}
+
+			return syllableCount;
+		}
+
+		// Hyphenation function
+		function hyphenateWord(word) {
+			word = word.replace(/[^a-zA-Z]/g, '').toLowerCase(); // Clean non-alphabetic characters
+			const syllables = word.match(/[aeiouy]+/g) || [];
+
+			// If the word has only one syllable, return it as is without hyphenation
+			if (syllables.length <= 1) return word;
+
+			// Break the word into syllables and insert hyphens between them
+			let hyphenated = '';
+			let lastIndex = 0;
+
+			for (let i = 0; i < syllables.length - 1; i++) {
+				const index = word.indexOf(syllables[i], lastIndex);
+				if (index !== -1) {
+					hyphenated += word.slice(lastIndex, index + syllables[i].length) + '-';
+					lastIndex = index + syllables[i].length;
+				}
+			}
+
+			hyphenated += word.slice(lastIndex); // Append the last part of the word without a hyphen
+			return hyphenated;
 		}
 	</script>
 </body>
