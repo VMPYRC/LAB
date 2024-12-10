@@ -14,7 +14,6 @@
 		textarea,
 		button {
 			width: 100%;
-			margin: 10px 0;
 			padding: 10px;
 			font-size: 1em;
 		}
@@ -43,7 +42,6 @@
 	<textarea id="textInput" rows="8" placeholder="Type your text here..."></textarea>
 	<button onclick="countSyllables()">Count Syllables</button>
 	<div class="output">
-		<h2>Results:</h2>
 		<pre id="result"></pre>
 	</div>
 
@@ -51,25 +49,17 @@
 		function countSyllables() {
 			const text = document.getElementById("textInput").value;
 			const lines = text.split('\n');
-			let output = '';
-
-			lines.forEach((line, index) => {
+			let output = lines.map((line, index) => {
 				const words = line.trim().split(/\s+/).filter(Boolean);
-				if (!words.length) return;
-
-				const syllablesInfo = words.map(word => `${word}(${countSyllablesInWord(word)})`);
-				const totalSyllables = syllablesInfo.reduce((sum, word) => sum + countSyllablesInWord(word), 0);
-
-				output += `Line ${index + 1}: ${syllablesInfo.join(' ')} | Total syllables: ${totalSyllables}\n`;
-			});
-
-			document.getElementById("result").innerText = output.trim();
+				const syllableInfo = words.map(word => `${word}(${countSyllablesInWord(word)})`).join(' ');
+				const totalSyllables = words.reduce((sum, word) => sum + countSyllablesInWord(word), 0);
+				return `Line ${index + 1}: ${syllableInfo} | Total syllables: ${totalSyllables}`;
+			}).join('\n');
+			document.getElementById("result").innerText = output;
 		}
 
 		function countSyllablesInWord(word) {
 			word = word.toLowerCase().replace(/[^a-z]/g, '');
-			if (!word) return 0;
-
 			const syllableCount = (word.match(/[aeiouy]+/g) || []).length;
 			return Math.max(syllableCount - (word.endsWith('e') ? 1 : 0), 1);
 		}
