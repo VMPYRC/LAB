@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Syllable Counter</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 20px;
+		}
+
+		input,
+		textarea {
+			width: 100%;
+			padding: 10px;
+			margin: 10px 0;
+		}
+
+		button {
+			padding: 10px 20px;
+			background-color: #007BFF;
+			color: white;
+			border: none;
+			cursor: pointer;
+		}
+
+		button:hover {
+			background-color: #0056b3;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>Syllable Counter</h1>
+	<p>Enter a word or text below to count the syllables:</p>
+	<textarea id="textInput" rows="5" placeholder="Type your text here..."></textarea>
+	<button onclick="countSyllables()">Count Syllables</button>
+	<h2>Syllable Count: <span id="syllableCount">0</span></h2>
+
+	<script>
+		function countSyllables() {
+			const text = document.getElementById("textInput").value;
+			const words = text.split(/\s+/); // Split by whitespace
+			let totalSyllables = 0;
+
+			words.forEach(word => {
+				totalSyllables += countSyllablesInWord(word);
+			});
+
+			document.getElementById("syllableCount").innerText = totalSyllables;
+		}
+
+		function countSyllablesInWord(word) {
+			word = word.toLowerCase().trim();
+			if (word === "") return 0;
+
+			// Basic regex to estimate syllables
+			let syllableCount = word.match(/[aeiouy]+/g)?.length || 0;
+
+			// Special cases
+			if (word.endsWith("e")) {
+				syllableCount -= 1;
+			}
+			if (syllableCount === 0) {
+				syllableCount = 1; // At least one syllable in a word
+			}
+
+			return syllableCount;
+		}
+	</script>
+</body>
+
+</html>
