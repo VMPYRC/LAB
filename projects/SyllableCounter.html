@@ -4,17 +4,18 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="../assets/style.css">
+	<link rel="icon" href="../assets/favicon.ico" type="image/x-icon">
 	<title>Syllable Counter</title>
-	<link rel="stylesheet" href="assets/style.css">
 </head>
 
 <body>
 	<div id="nav-container"></div>
-	<script src="assets/script_nav.js"></script>
 
 	<h1>Syllable Counter</h1>
 	<textarea id="textInput" rows="8" placeholder="Type your text here..."></textarea>
 	<button onclick="countSyllables()">Count Syllables</button>
+
 	<div class="output">
 		<pre id="result"></pre>
 	</div>
@@ -93,9 +94,10 @@
 			return hyphenated;
 		}
 	</script>
-</body>
 
-<div id="footer-container"></div>
-<script src="assets/script_footer.js"></script>
+	<div id="footer-container"></div>
+	<script src="../assets/script_footer.js"></script>
+	<script src="../assets/script_nav.js"></script>
+</body>
 
 </html>
