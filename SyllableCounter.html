@@ -12,7 +12,6 @@
 		}
 
 		textarea,
-		input,
 		button {
 			width: 100%;
 			margin: 10px 0;
@@ -31,10 +30,6 @@
 			background-color: #0056b3;
 		}
 
-		.output {
-			margin-top: 20px;
-		}
-
 		.output pre {
 			background-color: #f8f9fa;
 			padding: 10px;
@@ -45,7 +40,6 @@
 
 <body>
 	<h1>Syllable Counter</h1>
-	<p>Enter text below to count syllables for each line:</p>
 	<textarea id="textInput" rows="8" placeholder="Type your text here..."></textarea>
 	<button onclick="countSyllables()">Count Syllables</button>
 	<div class="output">
@@ -56,41 +50,28 @@
 	<script>
 		function countSyllables() {
 			const text = document.getElementById("textInput").value;
-			const lines = text.split(/\r?\n/); // Split by newlines
+			const lines = text.split('\n');
 			let output = '';
 
 			lines.forEach((line, index) => {
-				if (line.trim() === "") return; // Skip empty lines
-				const words = line.split(/\s+/); // Split by spaces
-				let lineSyllables = [];
-				let totalSyllables = 0;
+				const words = line.trim().split(/\s+/).filter(Boolean);
+				if (!words.length) return;
 
-				words.forEach(word => {
-					const syllables = countSyllablesInWord(word);
-					lineSyllables.push(`${word}(${syllables})`);
-					totalSyllables += syllables;
-				});
+				const syllablesInfo = words.map(word => `${word}(${countSyllablesInWord(word)})`);
+				const totalSyllables = syllablesInfo.reduce((sum, word) => sum + countSyllablesInWord(word), 0);
 
-				output += `Line ${index + 1}: ${lineSyllables.join(' ')} | Total syllables: ${totalSyllables}\n`;
+				output += `Line ${index + 1}: ${syllablesInfo.join(' ')} | Total syllables: ${totalSyllables}\n`;
 			});
 
 			document.getElementById("result").innerText = output.trim();
 		}
 
 		function countSyllablesInWord(word) {
-			word = word.toLowerCase().replace(/[^a-z]/g, ''); // Normalize word
-			if (word === "") return 0;
+			word = word.toLowerCase().replace(/[^a-z]/g, '');
+			if (!word) return 0;
 
-			// Basic regex to estimate syllables
-			let syllableCount = word.match(/[aeiouy]+/g)?.length || 0;
-
-			// Handle silent 'e'
-			if (word.endsWith("e")) {
-				syllableCount -= 1;
-			}
-
-			// Ensure at least one syllable per word
-			return Math.max(syllableCount, 1);
+			const syllableCount = (word.match(/[aeiouy]+/g) || []).length;
+			return Math.max(syllableCount - (word.endsWith('e') ? 1 : 0), 1);
 		}
 	</script>
 </body>
