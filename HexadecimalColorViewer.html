@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Hexadecimal Color Viewer</title>
+	<style>
+		body {
+			font-family: 'Times New Roman', Times, serif;
+			margin: 20px;
+		}
+
+		.color-box {
+			font-family: 'Times New Roman', Times, serif;
+			width: 200px;
+			height: 200px;
+			margin-top: 20px;
+			border: 1px solid #ccc;
+			background-color: white;
+		}
+
+		input {
+			font-family: 'Times New Roman', Times, serif;
+			padding: 5px;
+			font-size: 16px;
+			width: 300px;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>Hexadecimal Color Viewer</h1>
+
+	<div>
+		<label for="hex-input">Enter Hexadecimal ARGB Value:</label>
+		<br>
+		<input type="text" id="hex-input" placeholder="example: 0xFFFFFFFF" oninput="autoPreviewColor()">
+	</div>
+
+	<div class="color-box" id="color-box"></div>
+
+	<script>
+		function autoPreviewColor() {
+			// Get the input value
+			const hexInput = document.getElementById("hex-input").value.trim();
+
+			// Validate the format (must start with "0x" and be 10 characters long)
+			if (!/^0x[a-fA-F0-9]{8}$/.test(hexInput)) {
+				// If invalid, reset the color box to white
+				document.getElementById("color-box").style.backgroundColor = "white";
+				return;
+			}
+
+			// Extract ARGB components
+			const argb = parseInt(hexInput, 16);
+			const alpha = (argb >> 24) & 0xFF; // Extract Alpha
+			const red = (argb >> 16) & 0xFF;   // Extract Red
+			const green = (argb >> 8) & 0xFF;  // Extract Green
+			const blue = argb & 0xFF;          // Extract Blue
+
+			// Convert to CSS rgba format
+			const rgbaColor = `rgba(${red}, ${green}, ${blue}, ${alpha / 255})`;
+
+			// Set the background color of the box
+			document.getElementById("color-box").style.backgroundColor = rgbaColor;
+		}
+	</script>
+</body>
+
+</html>
