@@ -7,6 +7,31 @@
 	<link rel="stylesheet" href="../assets/style.css">
 	<link rel="icon" href="../assets/favicon.ico" type="image/x-icon">
 	<title>Hexadecimal Color Viewer</title>
+	<style>
+		/* Flex container for side-by-side layout */
+		.color-viewers {
+			display: flex;
+		}
+
+		.color-box {
+			width: 200px;
+			height: 200px;
+			border: 1px solid black;
+			margin-top: 10px;
+		}
+
+		.viewer {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+
+		/* Ensure no gap between the viewers */
+		.viewer+.viewer {
+			margin-left: -1px;
+			/* Overlap borders slightly */
+		}
+	</style>
 </head>
 
 <body>
@@ -15,23 +40,33 @@
 
 	<h1>Hexadecimal Color Viewer</h1>
 
-	<div>
-		<label for="hex-input">Enter Hexadecimal ARGB Value:</label>
-		<br>
-		<input type="text" id="hex-input" placeholder="example: 0xFFFFFFFF" oninput="autoPreviewColor()">
+	<div class="color-viewers">
+		<!-- Viewer 1 -->
+		<div class="viewer">
+			<label for="hex-input-1">ARGB:</label>
+			<input type="text" id="hex-input-1" placeholder="example: 0xFFFFFFFF"
+				oninput="autoPreviewColor('hex-input-1', 'color-box-1')">
+			<div class="color-box" id="color-box-1"></div>
+		</div>
+
+		<!-- Viewer 2 -->
+		<div class="viewer">
+			<label for="hex-input-2">ARGB:</label>
+			<input type="text" id="hex-input-2" placeholder="example: 0xFFFFFFFF"
+				oninput="autoPreviewColor('hex-input-2', 'color-box-2')">
+			<div class="color-box" id="color-box-2"></div>
+		</div>
 	</div>
 
-	<div class="color-box" id="color-box"></div>
-
 	<script>
-		function autoPreviewColor() {
+		function autoPreviewColor(inputId, boxId) {
 			// Get the input value
-			const hexInput = document.getElementById("hex-input").value.trim();
+			const hexInput = document.getElementById(inputId).value.trim();
 
 			// Validate the format (must start with "0x" and be 10 characters long)
 			if (!/^0x[a-fA-F0-9]{8}$/.test(hexInput)) {
 				// If invalid, reset the color box to white
-				document.getElementById("color-box").style.backgroundColor = "white";
+				document.getElementById(boxId).style.backgroundColor = "white";
 				return;
 			}
 
@@ -46,7 +81,7 @@
 			const rgbaColor = `rgba(${red}, ${green}, ${blue}, ${alpha / 255})`;
 
 			// Set the background color of the box
-			document.getElementById("color-box").style.backgroundColor = rgbaColor;
+			document.getElementById(boxId).style.backgroundColor = rgbaColor;
 		}
 	</script>
 
