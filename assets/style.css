@@ -1,28 +1,23 @@
+a {
+	color: #FF0080;
+	text-decoration: none;
+}
+
+a:focus {
+	outline: 2px solid #9900FF;
+}
+
+a:hover {
+	color: #00FFFF;
+}
+
+a:visited {
+	color: #9900FF;
+}
+
 body {
 	font-family: 'Times New Roman', Times, serif;
 	margin: 20px;
-}
-
-.color-box {
-	font-family: 'Times New Roman', Times, serif;
-	width: 200px;
-	height: 200px;
-	margin-top: 20px;
-	border: 1px solid #000000;
-	background-color: #FFFFFF;
-}
-
-input {
-	font-family: 'Times New Roman', Times, serif;
-	padding: 5px;
-	font-size: 16px;
-	width: 300px;
-}
-
-textarea,
-button {
-	width: 100%;
-	padding: 10px;
 }
 
 button {
@@ -36,10 +31,17 @@ button:hover {
 	background-color: #00FFFF;
 }
 
-.output pre {
-	background-color: #FFFFFF;
-	padding: 10px;
+.color-box {
+	font-family: 'Times New Roman', Times, serif;
+	width: 200px;
+	height: 200px;
+	margin-top: 20px;
 	border: 1px solid #000000;
+	background-color: #FFFFFF;
+}
+
+.color-viewers {
+	display: flex;
 }
 
 hr {
@@ -50,19 +52,33 @@ hr {
 	margin: 20px auto;
 }
 
-a {
-	color: #FF0080;
-	text-decoration: none;
+input {
+	font-family: 'Times New Roman', Times, serif;
+	padding: 5px;
+	font-size: 16px;
+	width: 100px;
 }
 
-a:hover {
-	color: #00FFFF;
+.output pre {
+	background-color: #FFFFFF;
+	padding: 10px;
+	border: 1px solid #000000;
 }
 
-a:visited {
-	color: #9900FF;
+textarea,
+button {
+	width: 100%;
+	padding: 10px;
 }
 
-a:focus {
-	outline: 2px solid #9900FF;
+.viewer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+/* Ensure no gap between the viewers */
+.viewer+.viewer {
+	margin-left: -1px;
+	/* Overlap borders slightly */
 }
