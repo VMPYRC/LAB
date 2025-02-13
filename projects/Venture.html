@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="author" content="VMPYRC" />
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="icon" href="../assets/favicon.ico" type="image/x-icon">
+  <title>Venture</title>
+</head>
+
+<body>
+  <h1><a href="https://vmpyrc.github.io/LAB/">VMPYRC'S LAB</a></h1>
+  <hr>
+
+  <h1>Venture</h1>
+
+  <h2>Gather Resources</h2>
+  <button onclick="getWood(1)">Chop Wood</button>
+  <button onclick="getStone(1)">Mine Stone</button>
+
+  <h2>Automated Bonuses</h2>
+  <button onclick="buyAxe()">
+    Auto Axe Cost: <span id="autoAxeCost">10</span> Wood
+  </button>
+  + <span id="autoAxes">0</span> Wood per second<br />
+  <button onclick="buyPickaxe()">
+    Auto Pickaxe Cost: <span id="autoPickaxeCost">10</span> Stone
+  </button>
+  + <span id="autoPickaxes">0</span> Stone per second<br />
+  <h2>Inventory</h2>
+  Wood: <span id="wood">0</span><br />
+  Stone: <span id="stone">0</span><br />
+
+  <script>
+    function prettify(input) {
+      var output = Math.round(input * 1000000) / 1000000;
+      return output;
+    }
+
+    // Wood
+    var wood = 0;
+    var autoAxes = 0;
+    function getWood(number) {
+      wood = wood + number;
+      document.getElementById("wood").innerHTML = wood;
+    }
+    function buyAxe() {
+      var autoAxeCost = Math.floor(10 * Math.pow(1.1, autoAxes)); // cost of auto axe
+      if (wood >= autoAxeCost) {
+        // can user afford the auto axe?
+        autoAxes = autoAxes + 1; // increases number of auto axes
+        wood = wood - autoAxeCost; // removes wood spent
+        document.getElementById("autoAxes").innerHTML = autoAxes; // updates number of auto axes
+        document.getElementById("wood").innerHTML = wood; // updates number of wood
+      }
+      var nextAxeCost = Math.floor(10 * Math.pow(1.1, autoAxes)); // cost of next auto axe
+      document.getElementById("autoAxeCost").innerHTML = nextAxeCost; // updates auto axe cost
+    }
+    window.setInterval(function () {
+      getWood(autoAxes);
+    }, 1000);
+
+    // Stone
+    var stone = 0;
+    var autoPickaxes = 0;
+    function getStone(number) {
+      stone = stone + number;
+      document.getElementById("stone").innerHTML = stone;
+    }
+    function buyPickaxe() {
+      var autoPickaxeCost = Math.floor(10 * Math.pow(1.1, autoPickaxes)); // cost of auto pickaxe
+      if (stone >= autoPickaxeCost) {
+        // can user afford the auto pickaxe?
+        autoPickaxes = autoPickaxes + 1; // increases number of auto pickaxe
+        stone = stone - autoPickaxeCost; // removes stone spent
+        document.getElementById("autoPickaxes").innerHTML = autoPickaxes; // updates number of auto pickaxe
+        document.getElementById("stone").innerHTML = stone; // updates number of stone
+      }
+      var nextPickaxeCost = Math.floor(10 * Math.pow(1.1, autoPickaxes)); // cost of next auto pickaxe
+      document.getElementById("autoPickaxeCost").innerHTML = nextPickaxeCost; // updates auto pickaxe cost
+    }
+    window.setInterval(function () {
+      getStone(autoPickaxes);
+    }, 1000);
+  </script>
+</body>
+
+</html>
