@@ -1,72 +1,104 @@
 a {
-	color: #FF0080;
+	color: #ff0080;
 	text-decoration: none;
 }
 
 a:focus {
-	outline: 2px solid #9900FF;
+	outline: 2px solid #9900ff;
 }
 
 a:hover {
-	color: #00FFFF;
+	color: #00ffff;
 }
 
 a:visited {
-	color: #9900FF;
+	color: #9900ff;
 }
 
 body {
-	font-family: 'Times New Roman', Times, serif;
+	font-family: "Times New Roman", Times, serif;
+	height: 100vh;
 	margin: 20px;
 }
 
 button {
-	background-color: #FF0080;
-	color: #FFFFFF;
+	background-color: #ff0080;
+	color: #ffffff;
 	border: none;
+	cursor: pointer;
+	padding: 10px 20px;
+	font-size: 16px;
 	cursor: pointer;
 }
 
 button:hover {
-	background-color: #00FFFF;
+	background-color: #00ffff;
 }
 
 .color-box {
-	font-family: 'Times New Roman', Times, serif;
+	font-family: "Times New Roman", Times, serif;
 	width: 200px;
 	height: 200px;
 	margin-top: 20px;
 	border: 1px solid #000000;
-	background-color: #FFFFFF;
+	background-color: #ffffff;
 }
 
 .color-viewers {
 	display: flex;
 }
 
+.container {
+	text-align: center;
+	background: white;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.content {
+	margin-left: 220px;
+	padding: 20px;
+	flex-grow: 1;
+}
+
 hr {
 	border: 0;
 	height: 2px;
-	background-color: #FF0080;
+	background-color: #ff0080;
 	width: 50%;
 	margin: 20px auto;
 }
 
 input {
-	font-family: 'Times New Roman', Times, serif;
+	font-family: "Times New Roman", Times, serif;
 	padding: 5px;
 	font-size: 16px;
 	width: 100px;
 }
 
+#notification {
+	color: #ff0080;
+	margin-bottom: 10px;
+}
+
 .output pre {
-	background-color: #FFFFFF;
+	background-color: #ffffff;
 	padding: 10px;
 	border: 1px solid #000000;
 }
 
-textarea,
-button {
+.sidebar {
+	width: 200px;
+	background-color: #fff;
+	padding: 10px;
+	box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+	position: fixed;
+	height: 100vh;
+	overflow-y: auto;
+}
+
+textarea {
 	width: 100%;
 	padding: 10px;
 }
@@ -77,8 +109,6 @@ button {
 	align-items: center;
 }
 
-/* Ensure no gap between the viewers */
-.viewer+.viewer {
+.viewer + .viewer {
 	margin-left: -1px;
-	/* Overlap borders slightly */
 }
