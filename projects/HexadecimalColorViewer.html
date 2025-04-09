@@ -1,54 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="../assets/style.css" />
+    <link rel="icon" href="../assets/favicon.ico" />
+    <meta name="author" content="VMPYRC" />
+    <title>Hexadecimal Color Viewer</title>
+  </head>
 
-<head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="stylesheet" href="../assets/style.css" />
-	<link rel="icon" href="../assets/favicon.ico" type="image/x-icon" />
-	<meta name="author" content="VMPYRC" />
-	<title>Hexadecimal Color Viewer</title>
-</head>
+  <body>
+    <h1><a href="https://vmpyrc.github.io/LAB/">VMPYRC'S LAB</a></h1>
+    <hr />
+    <h1>Hexadecimal Color Viewer</h1>
 
-<body>
-	<h1><a href="https://vmpyrc.github.io/LAB/">VMPYRC'S LAB</a></h1>
-	<hr />
-	<h1>Hexadecimal Color Viewer</h1>
+    <div class="color-viewers">
+      <div class="viewer">
+        <label for="hex-input-1">ARGB:</label>
+        <input
+          type="text"
+          id="hex-input-1"
+          placeholder="example: 0xFFFFFFFF"
+          oninput="autoPreviewColor('hex-input-1', 'color-box-1')"
+        />
+        <div class="color-box" id="color-box-1"></div>
+      </div>
 
-	<div class="color-viewers">
-		<div class="viewer">
-			<label for="hex-input-1">ARGB:</label>
-			<input type="text" id="hex-input-1" placeholder="example: 0xFFFFFFFF"
-				oninput="autoPreviewColor('hex-input-1', 'color-box-1')" />
-			<div class="color-box" id="color-box-1"></div>
-		</div>
+      <div class="viewer">
+        <label for="hex-input-2">ARGB:</label>
+        <input
+          type="text"
+          id="hex-input-2"
+          placeholder="example: 0xFFFFFFFF"
+          oninput="autoPreviewColor('hex-input-2', 'color-box-2')"
+        />
+        <div class="color-box" id="color-box-2"></div>
+      </div>
+    </div>
 
-		<div class="viewer">
-			<label for="hex-input-2">ARGB:</label>
-			<input type="text" id="hex-input-2" placeholder="example: 0xFFFFFFFF"
-				oninput="autoPreviewColor('hex-input-2', 'color-box-2')" />
-			<div class="color-box" id="color-box-2"></div>
-		</div>
-	</div>
-
-	<script>
-		function autoPreviewColor(inputId, boxId) {
-			const hexInput = document.getElementById(inputId).value.trim();
-			// Validate the format (must start with "0x" and be 10 characters long)
-			if (!/^0x[a-fA-F0-9]{8}$/.test(hexInput)) {
-				document.getElementById(boxId).style.backgroundColor = 'white';
-				return;
-			}
-			const argb = parseInt(hexInput, 16);
-			const alpha = (argb >> 24) & 0xff;
-			const red = (argb >> 16) & 0xff;
-			const green = (argb >> 8) & 0xff;
-			const blue = argb & 0xff;
-			const rgbaColor = `rgba(${red}, ${green}, ${blue}, ${alpha / 255})`;
-			document.getElementById(boxId).style.backgroundColor = rgbaColor;
-		}
-	</script>
-
-</body>
-
+    <script>
+      function autoPreviewColor(inputId, boxId) {
+        const hexInput = document.getElementById(inputId).value.trim();
+        // Validate the format (must start with "0x" and be 10 characters long)
+        if (!/^0x[a-fA-F0-9]{8}$/.test(hexInput)) {
+          document.getElementById(boxId).style.backgroundColor = "white";
+          return;
+        }
+        const argb = parseInt(hexInput, 16);
+        const alpha = (argb >> 24) & 0xff;
+        const red = (argb >> 16) & 0xff;
+        const green = (argb >> 8) & 0xff;
+        const blue = argb & 0xff;
+        const rgbaColor = `rgba(${red}, ${green}, ${blue}, ${alpha / 255})`;
+        document.getElementById(boxId).style.backgroundColor = rgbaColor;
+      }
+    </script>
+  </body>
 </html>
