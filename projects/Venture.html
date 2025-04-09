@@ -45,6 +45,7 @@
       </div>
 
       <h2>Sell Resources</h2>
+      <button onclick="sellAllResources()">Sell All Resources</button>
       <div>
         <input type="number" id="sellAmount" placeholder="Amount" />
         <select id="resourceType">
@@ -94,13 +95,11 @@
       };
 
       const updateDisplay = () => {
-        // Update resource displays
         ["wood", "stone", "currency"].forEach((resource) => {
           document.getElementById(resource).textContent =
             resources[resource].toLocaleString();
         });
 
-        // Update tool displays
         Object.keys(toolMapping).forEach((type) => {
           const { toolProperty, costElemId, countElemId, baseCost } =
             toolMapping[type];
@@ -166,7 +165,6 @@
       };
 
       const buyAllTools = () => {
-        // Try to buy all tools that can be bought with current resources
         Object.keys(toolMapping).forEach((type) => {
           const { toolProperty, baseCost } = toolMapping[type];
           const toolCount = resources[toolProperty];
@@ -179,6 +177,15 @@
         updateDisplay();
         manageProgress("save");
         showNotification("Bought all possible auto tools!");
+      };
+
+      const sellAllResources = () => {
+        resources.currency += resources.wood + resources.stone;
+        resources.wood = 0;
+        resources.stone = 0;
+        updateDisplay();
+        manageProgress("save");
+        showNotification("Sold all resources for currency!");
       };
 
       document.addEventListener("DOMContentLoaded", () => {
