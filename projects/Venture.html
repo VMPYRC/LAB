@@ -102,17 +102,18 @@
 
     // Update display of all resources and tool information
     const updateDisplay = () => {
-      document.getElementById("wood").textContent = resources.wood;
-      document.getElementById("stone").textContent = resources.stone;
-      document.getElementById("gold").textContent = resources.gold;
+      document.getElementById("wood").textContent = resources.wood.toLocaleString();
+      document.getElementById("stone").textContent = resources.stone.toLocaleString();
+      document.getElementById("gold").textContent = resources.gold.toLocaleString();
+
 
       // Update each tool's display
       Object.keys(toolMapping).forEach(type => {
         const mapping = toolMapping[type];
-        document.getElementById(mapping.countElemId).textContent =
-          resources[mapping.toolProperty];
-        const cost = Math.floor(mapping.baseCost * Math.pow(1.1, resources[mapping.toolProperty]));
-        document.getElementById(mapping.costElemId).textContent = cost;
+        document.getElementById(mapping.countElemId).textContent = resources[mapping.toolProperty].toLocaleString();
+        const toolCount = resources[mapping.toolProperty];
+        const cost = mapping.baseCost + (toolCount * 5);
+        document.getElementById(mapping.costElemId).textContent = cost.toLocaleString();
       });
     };
 
@@ -142,7 +143,7 @@
     const buyTool = (type) => {
       const mapping = toolMapping[type];
       const toolCount = resources[mapping.toolProperty];
-      const cost = Math.floor(mapping.baseCost * Math.pow(1.1, toolCount));
+      const cost = mapping.baseCost + (toolCount * 5);
       if (resources[type] >= cost) {
         resources[mapping.toolProperty]++;
         resources[type] -= cost;
@@ -165,6 +166,9 @@
       }, 1000);
     });
   </script>
+
+
+
 </body>
 
 </html>
