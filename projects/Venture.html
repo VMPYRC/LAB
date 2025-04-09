@@ -4,86 +4,166 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../assets/style.css" />
+  <link rel="icon" href="../assets/favicon.ico" type="image/x-icon" />
   <meta name="author" content="VMPYRC" />
-  <link rel="stylesheet" href="../assets/style.css">
-  <link rel="icon" href="../assets/favicon.ico" type="image/x-icon">
   <title>Venture</title>
 </head>
 
 <body>
   <h1><a href="https://vmpyrc.github.io/LAB/">VMPYRC'S LAB</a></h1>
-  <hr>
-
+  <hr />
   <h1>Venture</h1>
 
-  <h2>Gather Resources</h2>
-  <button onclick="getWood(1)">Chop Wood</button>
-  <button onclick="getStone(1)">Mine Stone</button>
+  <div class="sidebar">
+    <h2>Notifications</h2>
+    <ul id="notificationList" style="list-style-type: none; padding: 0;"></ul>
+  </div>
 
-  <h2>Automated Bonuses</h2>
-  <button onclick="buyAxe()">
-    Auto Axe Cost: <span id="autoAxeCost">10</span> Wood
-  </button>
-  + <span id="autoAxes">0</span> Wood per second<br />
-  <button onclick="buyPickaxe()">
-    Auto Pickaxe Cost: <span id="autoPickaxeCost">10</span> Stone
-  </button>
-  + <span id="autoPickaxes">0</span> Stone per second<br />
-  <h2>Inventory</h2>
-  Wood: <span id="wood">0</span><br />
-  Stone: <span id="stone">0</span><br />
+  <div class="content">
+    <h2>Gather Resources</h2>
+    <button onclick="gatherResource('wood', 1)">Chop Wood</button>
+    <button onclick="gatherResource('stone', 1)">Mine Stone</button>
+
+    <h2>Automated Bonuses</h2>
+    <button onclick="buyTool('wood')">
+      Auto Axe Cost: <span id="autoAxeCost">10</span> Wood
+    </button>
+    + <span id="autoAxes">0</span> Wood/sec<br />
+    <button onclick="buyTool('stone')">
+      Auto Pickaxe Cost: <span id="autoPickaxeCost">10</span> Stone
+    </button>
+    + <span id="autoPickaxes">0</span> Stone/sec<br />
+
+    <h2>Inventory</h2>
+    <div>
+      Wood: <span id="wood">0</span><br />
+      Stone: <span id="stone">0</span><br />
+      Gold: <span id="gold">0</span><br />
+    </div>
+
+    <h2>Sell Resources</h2>
+    <div>
+      <input type="number" id="sellAmount" placeholder="Amount" />
+      <select id="resourceType">
+        <option value="wood">Wood</option>
+        <option value="stone">Stone</option>
+      </select>
+      <button onclick="sellResource()">Sell</button>
+    </div>
+  </div>
 
   <script>
-    function prettify(input) {
-      var output = Math.round(input * 1000000) / 1000000;
-      return output;
-    }
+    // Initial resource counts and automated tool counts
+    const resources = {
+      wood: 0,
+      stone: 0,
+      gold: 0,
+      autoAxes: 0,
+      autoPickaxes: 0
+    };
 
-    // Wood
-    var wood = 0;
-    var autoAxes = 0;
-    function getWood(number) {
-      wood = wood + number;
-      document.getElementById("wood").innerHTML = wood;
-    }
-    function buyAxe() {
-      var autoAxeCost = Math.floor(10 * Math.pow(1.1, autoAxes)); // cost of auto axe
-      if (wood >= autoAxeCost) {
-        // can user afford the auto axe?
-        autoAxes = autoAxes + 1; // increases number of auto axes
-        wood = wood - autoAxeCost; // removes wood spent
-        document.getElementById("autoAxes").innerHTML = autoAxes; // updates number of auto axes
-        document.getElementById("wood").innerHTML = wood; // updates number of wood
+    // Mapping from resource type to its associated auto tool info
+    const toolMapping = {
+      wood: {
+        toolProperty: "autoAxes",
+        costElemId: "autoAxeCost",
+        countElemId: "autoAxes",
+        baseCost: 10
+      },
+      stone: {
+        toolProperty: "autoPickaxes",
+        costElemId: "autoPickaxeCost",
+        countElemId: "autoPickaxes",
+        baseCost: 10
       }
-      var nextAxeCost = Math.floor(10 * Math.pow(1.1, autoAxes)); // cost of next auto axe
-      document.getElementById("autoAxeCost").innerHTML = nextAxeCost; // updates auto axe cost
-    }
-    window.setInterval(function () {
-      getWood(autoAxes);
-    }, 1000);
+    };
 
-    // Stone
-    var stone = 0;
-    var autoPickaxes = 0;
-    function getStone(number) {
-      stone = stone + number;
-      document.getElementById("stone").innerHTML = stone;
-    }
-    function buyPickaxe() {
-      var autoPickaxeCost = Math.floor(10 * Math.pow(1.1, autoPickaxes)); // cost of auto pickaxe
-      if (stone >= autoPickaxeCost) {
-        // can user afford the auto pickaxe?
-        autoPickaxes = autoPickaxes + 1; // increases number of auto pickaxe
-        stone = stone - autoPickaxeCost; // removes stone spent
-        document.getElementById("autoPickaxes").innerHTML = autoPickaxes; // updates number of auto pickaxe
-        document.getElementById("stone").innerHTML = stone; // updates number of stone
+    // Display notifications
+    const showNotification = (message) => {
+      const listItem = document.createElement("li");
+      listItem.textContent = message;
+      document.getElementById("notificationList").prepend(listItem);
+    };
+
+    // Save progress to local storage
+    const saveProgress = () => {
+      Object.keys(resources).forEach(key => {
+        localStorage.setItem(key, resources[key]);
+      });
+    };
+
+    // Load progress from local storage
+    const loadProgress = () => {
+      Object.keys(resources).forEach(key => {
+        resources[key] = parseInt(localStorage.getItem(key)) || 0;
+      });
+    };
+
+    // Update display of all resources and tool information
+    const updateDisplay = () => {
+      document.getElementById("wood").textContent = resources.wood;
+      document.getElementById("stone").textContent = resources.stone;
+      document.getElementById("gold").textContent = resources.gold;
+
+      // Update each tool's display
+      Object.keys(toolMapping).forEach(type => {
+        const mapping = toolMapping[type];
+        document.getElementById(mapping.countElemId).textContent =
+          resources[mapping.toolProperty];
+        const cost = Math.floor(mapping.baseCost * Math.pow(1.1, resources[mapping.toolProperty]));
+        document.getElementById(mapping.costElemId).textContent = cost;
+      });
+    };
+
+    // Sell resource (wood or stone)
+    const sellResource = () => {
+      const amount = parseInt(document.getElementById("sellAmount").value, 10);
+      const resource = document.getElementById("resourceType").value;
+      if (resources[resource] >= amount) {
+        resources[resource] -= amount;
+        resources.gold += amount;
+        updateDisplay();
+        saveProgress();
+        showNotification(`Sold ${amount} ${resource}!`);
+      } else {
+        showNotification(`Not enough ${resource} to sell!`);
       }
-      var nextPickaxeCost = Math.floor(10 * Math.pow(1.1, autoPickaxes)); // cost of next auto pickaxe
-      document.getElementById("autoPickaxeCost").innerHTML = nextPickaxeCost; // updates auto pickaxe cost
-    }
-    window.setInterval(function () {
-      getStone(autoPickaxes);
-    }, 1000);
+    };
+
+    // Gather a specified amount of resource
+    const gatherResource = (type, amount) => {
+      resources[type] += amount;
+      updateDisplay();
+      saveProgress();
+    };
+
+    // Purchase an automated tool (axe or pickaxe) using the given resource type
+    const buyTool = (type) => {
+      const mapping = toolMapping[type];
+      const toolCount = resources[mapping.toolProperty];
+      const cost = Math.floor(mapping.baseCost * Math.pow(1.1, toolCount));
+      if (resources[type] >= cost) {
+        resources[mapping.toolProperty]++;
+        resources[type] -= cost;
+        updateDisplay();
+        saveProgress();
+      } else {
+        showNotification(`Not enough ${type} to buy tool!`);
+      }
+    };
+
+    // When the page loads, load progress and start updating every second
+    document.addEventListener("DOMContentLoaded", () => {
+      loadProgress();
+      updateDisplay();
+      setInterval(() => {
+        gatherResource("wood", resources.autoAxes);
+        gatherResource("stone", resources.autoPickaxes);
+        saveProgress();
+        updateDisplay();
+      }, 1000);
+    });
   </script>
 </body>
 
