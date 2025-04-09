@@ -4,7 +4,7 @@
 
 - Food
   - Hunting
-  - Foraging
+  - Foraging, Herbs
   - Farming
 - Water
 - Metals
@@ -13,6 +13,11 @@
   - Gold
 - Gems
 - Energy
+- Clothing
+  - Threads
+- Collecting
+  - Shells
+- Paper
 
 ## Upgrades
 
