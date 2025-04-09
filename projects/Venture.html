@@ -38,7 +38,7 @@
       <div>
         Wood: <span id="wood">0</span><br />
         Stone: <span id="stone">0</span><br />
-        Gold: <span id="gold">0</span><br />
+        Currency: <span id="currency">0</span><br />
       </div>
 
       <h2>Sell Resources</h2>
@@ -56,7 +56,7 @@
       const resources = {
         wood: 0,
         stone: 0,
-        gold: 0,
+        currency: 0,
         autoAxes: 0,
         autoPickaxes: 0,
       };
@@ -92,7 +92,7 @@
 
       const updateDisplay = () => {
         // Update resource displays
-        ["wood", "stone", "gold"].forEach((resource) => {
+        ["wood", "stone", "currency"].forEach((resource) => {
           document.getElementById(resource).textContent =
             resources[resource].toLocaleString();
         });
@@ -118,7 +118,7 @@
         const resource = document.getElementById("resourceType").value;
         if (resources[resource] >= amount) {
           resources[resource] -= amount;
-          resources.gold += amount;
+          resources.currency += amount;
           updateDisplay();
           manageProgress("save");
           showNotification(`Sold ${amount} ${resource}!`);
