@@ -30,11 +30,11 @@
       <button onclick="buyAllTools()">Buy All Auto Tools</button>
       <br />
       <button onclick="buyTool('wood')">
-        Auto Axe Cost: <span id="autoAxeCost">10</span> Wood
+        Auto Axe Cost: <span id="autoAxeCost">5</span> Wood
       </button>
       + <span id="autoAxes">0</span> Wood/sec<br />
       <button onclick="buyTool('stone')">
-        Auto Pickaxe Cost: <span id="autoPickaxeCost">10</span> Stone
+        Auto Pickaxe Cost: <span id="autoPickaxeCost">5</span> Stone
       </button>
       + <span id="autoPickaxes">0</span> Stone/sec<br />
 
@@ -45,8 +45,9 @@
         Currency: <span id="currency">0</span><br />
       </div>
 
-      <h2>Sell Resources</h2>
-      <button onclick="sellAllResources()">Sell All Resources</button>
+    <h2>Sell Resources</h2>
+      <div>
+      <i>1 Currency per Unit</i><br />
       <div>
         <input type="number" id="sellAmount" placeholder="Amount" />
         <select id="resourceType">
@@ -55,7 +56,7 @@
         </select>
         <button onclick="sellResource()">Sell</button>
       </div>
-    </div>
+      <button onclick="sellAllResources()">Sell All Resources</button>
 
     <script>
       const resources = {
@@ -71,13 +72,13 @@
           toolProperty: "autoAxes",
           costElemId: "autoAxeCost",
           countElemId: "autoAxes",
-          baseCost: 10,
+          baseCost: 5,
         },
         stone: {
           toolProperty: "autoPickaxes",
           costElemId: "autoPickaxeCost",
           countElemId: "autoPickaxes",
-          baseCost: 10,
+          baseCost: 5,
         },
       };
 
@@ -100,7 +101,6 @@
           document.getElementById(resource).textContent =
             resources[resource].toLocaleString();
         });
-
         Object.keys(toolMapping).forEach((type) => {
           const { toolProperty, costElemId, countElemId, baseCost } =
             toolMapping[type];
