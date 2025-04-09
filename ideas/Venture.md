@@ -3,8 +3,14 @@
 ## More Resources
 
 - Food
+  - Hunting
+  - Foraging
+  - Farming
 - Water
 - Metals
+  - Iron
+  - Copper
+  - Gold
 - Gems
 - Energy
 
