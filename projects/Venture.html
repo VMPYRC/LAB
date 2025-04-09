@@ -26,6 +26,8 @@
       <button onclick="gatherResource('stone', 1)">Mine Stone</button>
 
       <h2>Automated Bonuses</h2>
+      <button onclick="buyAllTools()">Buy All Auto Tools</button>
+      <br />
       <button onclick="buyTool('wood')">
         Auto Axe Cost: <span id="autoAxeCost">10</span> Wood
       </button>
@@ -161,6 +163,22 @@
           updateDisplay();
           showNotification("Progress has been reset!");
         }
+      };
+
+      const buyAllTools = () => {
+        // Try to buy all tools that can be bought with current resources
+        Object.keys(toolMapping).forEach((type) => {
+          const { toolProperty, baseCost } = toolMapping[type];
+          const toolCount = resources[toolProperty];
+          const cost = baseCost + toolCount * 5;
+          while (resources[type] >= cost) {
+            resources[toolProperty]++;
+            resources[type] -= cost;
+          }
+        });
+        updateDisplay();
+        manageProgress("save");
+        showNotification("Bought all possible auto tools!");
       };
 
       document.addEventListener("DOMContentLoaded", () => {
