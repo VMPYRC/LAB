@@ -13,6 +13,7 @@
     <h1><a href="https://vmpyrc.github.io/LAB/">VMPYRC'S LAB</a></h1>
     <hr />
     <h1>Venture</h1>
+    <button onclick="resetProgress()">Reset Progress</button>
 
     <div class="sidebar">
       <h2>Notifications</h2>
@@ -144,6 +145,21 @@
           manageProgress("save");
         } else {
           showNotification(`Not enough ${type} to buy tool!`);
+        }
+      };
+
+      const resetProgress = () => {
+        if (
+          confirm(
+            "Are you sure you want to reset all progress? This action cannot be undone."
+          )
+        ) {
+          Object.keys(resources).forEach((key) => {
+            resources[key] = 0;
+          });
+          localStorage.clear();
+          updateDisplay();
+          showNotification("Progress has been reset!");
         }
       };
 
