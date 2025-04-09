@@ -2,61 +2,49 @@
 <html lang="en">
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="../assets/style.css">
-	<link rel="icon" href="../assets/favicon.ico" type="image/x-icon">
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="../assets/style.css" />
+	<link rel="icon" href="../assets/favicon.ico" type="image/x-icon" />
 	<meta name="author" content="VMPYRC" />
 	<title>Hexadecimal Color Viewer</title>
 </head>
 
 <body>
 	<h1><a href="https://vmpyrc.github.io/LAB/">VMPYRC'S LAB</a></h1>
-	<hr>
-
+	<hr />
 	<h1>Hexadecimal Color Viewer</h1>
 
 	<div class="color-viewers">
-		<!-- Viewer 1 -->
 		<div class="viewer">
 			<label for="hex-input-1">ARGB:</label>
 			<input type="text" id="hex-input-1" placeholder="example: 0xFFFFFFFF"
-				oninput="autoPreviewColor('hex-input-1', 'color-box-1')">
+				oninput="autoPreviewColor('hex-input-1', 'color-box-1')" />
 			<div class="color-box" id="color-box-1"></div>
 		</div>
 
-		<!-- Viewer 2 -->
 		<div class="viewer">
 			<label for="hex-input-2">ARGB:</label>
 			<input type="text" id="hex-input-2" placeholder="example: 0xFFFFFFFF"
-				oninput="autoPreviewColor('hex-input-2', 'color-box-2')">
+				oninput="autoPreviewColor('hex-input-2', 'color-box-2')" />
 			<div class="color-box" id="color-box-2"></div>
 		</div>
 	</div>
 
 	<script>
 		function autoPreviewColor(inputId, boxId) {
-			// Get the input value
 			const hexInput = document.getElementById(inputId).value.trim();
-
 			// Validate the format (must start with "0x" and be 10 characters long)
 			if (!/^0x[a-fA-F0-9]{8}$/.test(hexInput)) {
-				// If invalid, reset the color box to white
-				document.getElementById(boxId).style.backgroundColor = "white";
+				document.getElementById(boxId).style.backgroundColor = 'white';
 				return;
 			}
-
-			// Extract ARGB components
 			const argb = parseInt(hexInput, 16);
-			const alpha = (argb >> 24) & 0xFF; // Extract Alpha
-			const red = (argb >> 16) & 0xFF;   // Extract Red
-			const green = (argb >> 8) & 0xFF;  // Extract Green
-			const blue = argb & 0xFF;          // Extract Blue
-
-			// Convert to CSS rgba format
+			const alpha = (argb >> 24) & 0xff;
+			const red = (argb >> 16) & 0xff;
+			const green = (argb >> 8) & 0xff;
+			const blue = argb & 0xff;
 			const rgbaColor = `rgba(${red}, ${green}, ${blue}, ${alpha / 255})`;
-
-			// Set the background color of the box
 			document.getElementById(boxId).style.backgroundColor = rgbaColor;
 		}
 	</script>
